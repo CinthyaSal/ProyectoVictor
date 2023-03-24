@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import { Image, Text, StyleSheet, View, ScrollView, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
-//import { BlurView } from 'expo-blur';
+
 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
@@ -9,19 +9,39 @@ import { firebaseConfig } from './firebase-config';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import HomeScreen from './screens/HomeScreen';
 
-const uri = 'https://ak.picdn.net/shutterstock/videos/1060308725/thumb/1.jpg'
-const profilePicture = 'https://randomuser.me/api/portraits/men/34.jpg'
+import Seguros from './screens/Seguros';
+import Informacion from './screens/Informacion';
 
-function Home() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <HomeScreen/>
-    </View>
-  );
-}
 
+  function HomeScreen(){
+    const navigation = useNavigation();
+        const Seguro = () => {
+        navigation.navigate('Seguros');
+    }
+    const Info = () => {
+      navigation.navigate('Informacion');
+  }
+    return (
+    
+      <View style={styles.containerH}>
+        <TouchableOpacity
+        style={styles.buttonOp}
+        onPress={Seguro}>
+          <Text style={styles.buttonText}>Seguros</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonOp}
+        onPress={Info}>
+          <Text style={styles.buttonText}>Informacion</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonOp}>
+          <Text style={styles.buttonText}>Perfil</Text>
+        </TouchableOpacity>
+        
+       </View>
+       
+    );
+  }
   function LoginScreen() {
 
     const [email, setEmail] = React.useState('')
@@ -50,7 +70,7 @@ function Home() {
         console.log('Signed in!')
         const user = userCredential.user;
         console.log(user)
-        navigation.navigate('Home');
+        navigation.navigate('HomeScreen');
       })
       .catch(error => {
         console.log(error)
@@ -60,7 +80,6 @@ function Home() {
 
     return (
       <View style={styles.container}>
-        <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
         <ScrollView contentContainerStyle= {{
           flex: 1,
           width: '100%',
@@ -69,7 +88,7 @@ function Home() {
           justifyContent: 'center',
         }}> 
          <View style={styles.login}>
-              <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
+              <Image source={require("./assets/user.png")} style={styles.profilePicture} />
               <View>
                 <TextInput 
                 onChangeText={(text) => setEmail(text)} 
@@ -108,7 +127,9 @@ function Home() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen  style={styles.stack} name="Seguros" component={Seguros} />
+        <Stack.Screen name="Informacion" component={Informacion} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -118,7 +139,7 @@ function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#abe4ff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -164,6 +185,24 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderColor: '#fff',
     borderWidth: 1,
+  },
+  buttonOp:{
+    marginTop:100,
+    backgroundColor:"#ffabab",
+    borderRadius:10,
+    
+  },
+  buttonText:{
+    fontSize:30,
+    color:"white",
+  },
+  stack:{
+    marginTop:10,
+  },
+  containerH:{
+    alignItems:'center',
+    backgroundColor:"#ddffab",
+    height:1000,
   }
 
 });
